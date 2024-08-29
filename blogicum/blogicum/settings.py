@@ -6,7 +6,10 @@ SECRET_KEY = 'django-insecure--qhpj59#nx4i9doyozl*^ys+1%0^&o%^x=^(ooi0q2vahn3xu#
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 #ошибка доступа пользователя на запретную страницу
 CSRF_FAILURE_VIEW = 'pages.views.csrf_failure' 
@@ -64,6 +67,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+TEMPLATES_DIR = BASE_DIR / 'templates'
 
 FIXTURE_DIRS = ['fixtures']
 
@@ -125,3 +130,10 @@ LOGOUT_REDIRECT_URL = 'blog:index'
 
 #перенаправление на страницу логина
 LOGIN_URL = 'login' 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails' 
+
+MEDIA_ROOT = BASE_DIR / 'media' 

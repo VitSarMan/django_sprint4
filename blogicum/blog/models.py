@@ -1,9 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
+from django.utils import timezone
 from blogicum import settings
 
 User = get_user_model()
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(pub_date__lte=timezone.now(), is_published=True)
+    
+
+    class Meta:
+        abstract = True
 
 
 class PublishedCreatedModel(models.Model):
@@ -55,11 +63,15 @@ class Post(PublishedCreatedModel):
         on_delete=models.SET_NULL,
         null=True
     )
+    image = models.ImageField('Фото', upload_to='posts_images', blank=True)
 
+    objects = models.Manager()
+    published = PublishedManager()
+    
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        ordering = ['title']
+        ordering = ['created_at']
 
     def __str__(self):
         return self.title
@@ -80,6 +92,7 @@ class Category(PublishedCreatedModel):
         )
     )
 
+
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
@@ -94,9 +107,26 @@ class Location(PublishedCreatedModel):
         verbose_name='Название места'
     )
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
 
+    
+
+
+class Comments(models.Model):
+    text = models.TextField(verbose_name='Комментарий')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Публикация')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='Автор') 
+
     def __str__(self):
-        return self.name
+        return self.text
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
