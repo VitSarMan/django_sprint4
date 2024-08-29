@@ -23,6 +23,7 @@ class CommentsAdmin(admin.ModelAdmin):
         'text',
     )
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'title',

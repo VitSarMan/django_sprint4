@@ -5,8 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf.urls.static import static
 from django.conf import settings
 
-handler404 = 'pages.views.page_not_found' 
-handler403 = 'pages.views.custom_403_view' 
+handler404 = 'pages.views.page_not_found'
+handler403 = 'pages.views.custom_403_view'
 handler500 = 'pages.views.internal_server_error'
 
 urlpatterns = [
@@ -17,10 +17,10 @@ urlpatterns = [
     path(
         'auth/registration',
         CreateView.as_view(
-            template_name = 'registration/registration_form.html',
-            form_class = UserCreationForm,
-            success_url = reverse_lazy('blog:index'),
+            template_name='registration/registration_form.html',
+            form_class=UserCreationForm,
+            success_url=reverse_lazy('blog:index'),
         ),
-        name = 'registration',
+        name='registration',
     ),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

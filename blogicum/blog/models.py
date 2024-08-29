@@ -5,10 +5,13 @@ from blogicum import settings
 
 User = get_user_model()
 
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(pub_date__lte=timezone.now(), is_published=True)
-    
+        return super().get_queryset().filter(
+            pub_date__lte=timezone.now(),
+            is_published=True
+        )
 
     class Meta:
         abstract = True
@@ -67,7 +70,7 @@ class Post(PublishedCreatedModel):
 
     objects = models.Manager()
     published = PublishedManager()
-    
+
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
@@ -92,7 +95,6 @@ class Category(PublishedCreatedModel):
         )
     )
 
-
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
@@ -114,14 +116,23 @@ class Location(PublishedCreatedModel):
         verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
 
-    
-
 
 class Comments(models.Model):
     text = models.TextField(verbose_name='Комментарий')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Публикация')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='Автор') 
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания'
+    )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        verbose_name='Публикация'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True, verbose_name='Автор'
+    )
 
     def __str__(self):
         return self.text

@@ -11,8 +11,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-#ошибка доступа пользователя на запретную страницу
-CSRF_FAILURE_VIEW = 'pages.views.csrf_failure' 
+# ошибка доступа пользователя на запретную страницу
+CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
 # Application definition
 
@@ -124,16 +124,16 @@ POST_LIST_GET_LENGTH = 5
 FIXTURE_DIRS = ['fixtures']
 
 
-#адрес перенаправления после логина
-LOGIN_REDIRECT_URL = 'blog:index' 
+# адрес перенаправления после логина
+LOGIN_REDIRECT_URL = 'blog:index'
 LOGOUT_REDIRECT_URL = 'blog:index'
 
-#перенаправление на страницу логина
-LOGIN_URL = 'login' 
+# перенаправление на страницу логина
+LOGIN_URL = 'login'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
-EMAIL_FILE_PATH = BASE_DIR / 'sent_emails' 
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
-MEDIA_ROOT = BASE_DIR / 'media' 
+MEDIA_ROOT = BASE_DIR / 'media'
