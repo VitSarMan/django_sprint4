@@ -19,13 +19,13 @@ CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'pages.apps.PagesConfig',
+    'django_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
