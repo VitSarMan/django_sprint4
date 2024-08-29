@@ -31,14 +31,19 @@ class UserMixin:
 
 class UserDetailView(UserMixin, DetailView):
     template_name = 'blog/profile.html'
+    context_object_name = 'profile'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = self.object
-        if self.request.user == self.object:
-            user_posts = Post.objects.filter(author=self.object.id)
+        profile_user = self.get_object()
+
+        if self.request.user == profile_user:
+            user_posts = Post.objects.filter(author=profile_user)
         else:
-            user_posts = Post.published.filter(author=self.object.id)
+            user_posts = Post.published.filter(
+                author=profile_user,
+                category__is_published=True,
+            )
 
         user_posts = user_posts.annotate(
             comment_count=Count('comments')
@@ -48,8 +53,8 @@ class UserDetailView(UserMixin, DetailView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        context['user'] = self.request.user
         context['page_obj'] = page_obj
+        context['profile'] = profile_user
 
         return context
 
