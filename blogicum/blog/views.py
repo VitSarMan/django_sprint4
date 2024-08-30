@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
@@ -162,7 +162,7 @@ class PostDeleteView(OnlyAuthorMixin, DeleteView):
         return reverse('blog:index')
 
 
-class PostUpdateView(OnlyAuthorMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, OnlyAuthorMixin, UpdateView):
     model = Post
     template_name = 'blog/create.html'
     form_class = PostForm
@@ -179,6 +179,9 @@ class PostUpdateView(OnlyAuthorMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'post_id': self.object.id})
+
+    def handle_no_permission(self):
+        return redirect('blog:index')
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
