@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 handler404 = 'pages.views.page_not_found'
-handler403 = 'pages.views.custom_403_view'
+
 handler500 = 'pages.views.internal_server_error'
 
 urlpatterns = [
@@ -15,7 +15,7 @@ urlpatterns = [
     path('pages/', include('pages.urls', namespace='pages')),
     path('auth/', include('django.contrib.auth.urls')),
     path(
-        'auth/registration',
+        'auth/registration/',
         CreateView.as_view(
             template_name='registration/registration_form.html',
             form_class=UserCreationForm,
