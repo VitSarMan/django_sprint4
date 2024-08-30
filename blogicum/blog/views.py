@@ -117,7 +117,7 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
         context['form'] = CommentsForm()
-        context['comments'] = post.comments_set.all()
+        context['comments'] = post.comments_set.all().order_by('created_at')
         return context
 
 
