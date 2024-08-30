@@ -108,8 +108,8 @@ class PostDetailView(DetailView):
     def get_object(self):
         post_id = self.kwargs.get("post_id")
         post = get_object_or_404(Post, id=post_id)
-        if not post.is_published:
-            raise Http404("Пост не опубликован")
+        if not post.is_published and self.request.user != post.author:
+            raise Http404()
 
         return post
 
