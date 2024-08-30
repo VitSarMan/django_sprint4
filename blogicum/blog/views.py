@@ -164,12 +164,21 @@ class PostDeleteView(OnlyAuthorMixin, DeleteView):
 
 class PostUpdateView(OnlyAuthorMixin, UpdateView):
     model = Post
-    template_name = 'blog/detail.html'
+    template_name = 'blog/create.html'
     form_class = PostForm
 
     def get_object(self):
         post_id = self.kwargs.get("post_id")
         return get_object_or_404(Post, id=post_id)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('blog:post_detail', kwargs={'post_id': self.object.id})
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
