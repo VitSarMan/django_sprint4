@@ -42,6 +42,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'title',
         'is_published',
         'author',

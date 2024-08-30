@@ -28,7 +28,7 @@ urlpatterns = [
         name='add_comment'
     ),
     path(
-        'posts/<int:post_id>/detail/',
+        'posts/<int:post_id>/',
         views.PostDetailView.as_view(),
         name='post_detail'
     ),
