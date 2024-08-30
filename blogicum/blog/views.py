@@ -1,17 +1,15 @@
-import datetime
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.shortcuts import get_object_or_404, render
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from blogicum import settings
+from django.db.models import Count
 from django.http import Http404
-from .models import Category, Post, Comments
-
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
-from django.contrib.auth import get_user_model
-from django.urls import reverse
-from .forms import PostForm, CommentsForm
-from django.db.models import Count
+
+from .forms import CommentsForm, PostForm
+from .models import Category, Comments, Post
 
 
 class OnlyAuthorMixin(UserPassesTestMixin):
