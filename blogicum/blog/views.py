@@ -181,7 +181,8 @@ class PostUpdateView(LoginRequiredMixin, OnlyAuthorMixin, UpdateView):
         return reverse('blog:post_detail', kwargs={'post_id': self.object.id})
 
     def handle_no_permission(self):
-        return redirect('blog:index')
+        post_id = self.kwargs.get("post_id")
+        return redirect('blog:post_detail', post_id=post_id)
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
