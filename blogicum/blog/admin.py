@@ -10,6 +10,7 @@ class PostInline(admin.StackedInline):
     extra = 1
 
 
+@admin.register(Comments)
 class CommentsAdmin(admin.ModelAdmin):
     list_display = (
         'text',
@@ -24,6 +25,7 @@ class CommentsAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -40,6 +42,7 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = (PostInline,)
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -68,6 +71,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
 
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -77,9 +81,3 @@ class LocationAdmin(admin.ModelAdmin):
         'name',
     )
     inlines = (PostInline,)
-
-
-admin.site.register(Post, PostAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Comments, CommentsAdmin)

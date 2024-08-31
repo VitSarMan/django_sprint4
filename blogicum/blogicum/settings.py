@@ -123,6 +123,8 @@ POST_LIST_GET_LENGTH = 5
 
 FIXTURE_DIRS = ['fixtures']
 
+MAX_POSTS_IN_PROFILE_ON_PAGE = 10
+
 
 # адрес перенаправления после логина
 LOGIN_REDIRECT_URL = 'blog:index'

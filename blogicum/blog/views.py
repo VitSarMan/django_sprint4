@@ -1,7 +1,5 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -12,20 +10,9 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 from .forms import CommentsForm, PostForm
 from .models import Category, Comments, Post
 
-
-class OnlyAuthorMixin(UserPassesTestMixin):
-    def test_func(self):
-        object = self.get_object()
-        if hasattr(object, 'username'):
-            return object.username == self.request.user.username
-        elif hasattr(object, 'author'):
-            return object.author.username == self.request.user.username
-
-
-class UserMixin:
-    model = get_user_model()
-    slug_url_kwarg = 'username'
-    slug_field = 'username'
+from blogicum.settings import MAX_POSTS_IN_PROFILE_ON_PAGE
+from .mixins import UserMixin, OnlyAuthorMixin
+from .utils import annotate_comments_queryset
 
 
 class UserDetailView(UserMixin, DetailView):
@@ -44,11 +31,11 @@ class UserDetailView(UserMixin, DetailView):
                 category__is_published=True,
             )
 
-        user_posts = user_posts.annotate(
-            comment_count=Count('comments')
+        user_posts = annotate_comments_queryset(
+            user_posts
         ).order_by('-pub_date')
 
-        paginator = Paginator(user_posts, 10)
+        paginator = Paginator(user_posts, MAX_POSTS_IN_PROFILE_ON_PAGE)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
@@ -97,7 +84,7 @@ class PostsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.annotate(comment_count=Count('comments'))
+        queryset = annotate_comments_queryset(queryset)
         return queryset
 
 
@@ -143,9 +130,7 @@ class CategoryListView(ListView):
             'category',
             'location'
         ).select_related('author')
-        queryset = queryset.annotate(
-            comment_count=Count('comments')
-        ).order_by('-pub_date')
+        queryset = annotate_comments_queryset(queryset).order_by('-pub_date')
         return queryset
 
     def get_context_data(self, **kwargs):
