@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
@@ -109,8 +110,11 @@ class PostDetailView(DetailView):
         post_id = self.kwargs.get("post_id")
         post = get_object_or_404(Post, id=post_id)
         if (
-            not post.is_published or not post.category.is_published
-        ) and self.request.user != post.author:
+            ((post.pub_date > timezone.now()
+              ) or (not post.is_published
+                    ) or not post.category.is_published)
+            and self.request.user != post.author
+        ):
             raise Http404()
 
         return post
