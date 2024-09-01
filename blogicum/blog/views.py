@@ -7,11 +7,11 @@ from django.utils import timezone
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from .forms import CommentsForm, PostForm
-from .models import Category, Comments, Post
-
 from blogicum.settings import MAX_POSTS_IN_PROFILE_ON_PAGE
-from .mixins import UserMixin, OnlyAuthorMixin
+
+from .forms import CommentsForm, PostForm
+from .mixins import OnlyAuthorMixin, UserMixin
+from .models import Category, Comments, Post
 from .utils import annotate_comments_queryset
 
 
